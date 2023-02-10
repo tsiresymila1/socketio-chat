@@ -1,2 +1,6 @@
-fastapi
+python-socketio
+python-engineio
+websockets
+jinja2
+starlite
 uvicorn
