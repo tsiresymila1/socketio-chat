@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "py-socketio"
+version = "0.1.0"
+description = ""
+authors = ["tsiresymila <tsiresymila@gmail.com>"]
+readme = "README.md"
+packages = [{include = "py_socketio"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+starlite = "^1.51.0"
+python-socketio = "^5.7.2"
+python-engineio = "^4.3.4"
+websockets = "^10.4"
+
+
+[tool.poetry.group.dev.dependencies]
+uvicorn = "^0.20.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{title}}</title>
+  <style>
+    html {
+      width: 100vw;
+      height: 100vh;
+      background-color: black;
+      padding: 0px;
+      margin: 0 px;
+    }
+
+    body {
+      padding: 0px;
+      margin: 0px;
+    }
+
+    .inputContainer {
+      position: fixed;
+      bottom: 0;
+      background-color: white;
+      width: 100%;
+      vertical-align: center;
+      display: flex;
+      overflow-x: scroll;
+      flex-grow: initial;
+    }
+
+    input {
+      height: 40px;
+      border: 1px solid teal !important;
+      border-radius: 4px;
+      padding: 2px 12px;
+      flex: content;
+    }
+
+    button {
+      margin-left: 12px !important;
+      margin-right: 12px !important;
+      background-color: teal;
+      color: white;
+      border-radius: 4px;
+      border-color: teal;
+      border: 1px solid teal;
+      padding: 8px 20px;
+      cursor: pointer;
+    }
+
+    input:focus,
+    input:active {
+      border: 1px solid teal !important;
+      outline: none;
+      box-shadow: none;
+      display: flexbox;
+    }
+
+    .message {
+      margin-bottom: 60px;
+      overflow-y: auto;
+      height: 90vh;
+      position: relative;
+      padding: 20px;
+    }
+
+    .messageContent {
+      background-color: white;
+      color: teal;
+      border-radius: 12px;
+      padding: 20px 20px;
+      margin-bottom: 12px
+
+    }
+  </style>
+</head>
+
+<body>
+  <div class="message" id="message">
+
+  </div>
+  <div class="inputContainer">
+    <div style="position:relative;display:flex; width:100%; padding:10px 20px">
+      <div style="width:100%">
+        <input id="content" style="width:100%" />
+      </div>
+      <button id="btn-send">Send</button>
+    </div>
+  </div>
+  <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
+
+  <script>
+    const socket = io('/');
+    function addMessage(content) {
+      var message = document.getElementById('message')
+      if (message) {
+        var child = document.createElement('div');
+        child.classList.add('messageContent')
+        child.innerText = content.data;
+        message.appendChild(child)
+      }
+    }
+
+    socket.on('connect', function () {
+      console.log("Connected")
+    })
+
+    socket.on('message', function (data) {
+      console.log("Data >>>>", data)
+      addMessage(JSON.parse(data))
+
+    })
+
+    socket.on('disconnect', function (data) {
+      console.log("Disconnected >>>>", data)
+    })
+
+    socket.on('error', function (data) {
+      console.log("error >>>>", data)
+    })
+
+    document.getElementById('btn-send').addEventListener('click', function () {
+      console.log("Click")
+      var message = document.getElementById('content')
+      if (message && message.value !== "") {
+        var value = message.value
+        socket.emit('message', value)
+        message.value = ""
+      }
+    })
+  </script>
+</body>
+
+</html>
